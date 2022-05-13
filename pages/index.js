@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useState, useRef } from 'react'
 import styles from '../styles/Home.module.css'
 
-export default function Home () {
+export default function Home() {
   const [target, setTarget] = useState(10)
   const [current, setCurrent] = useState(0)
   const [selectedImage, setSelectedImage] = useState(null)
@@ -36,55 +36,55 @@ export default function Home () {
   }
 
   return (
-    <div className='flex h-screen flex-row items-center justify-center'>
-      <div className='flex flex-col items-center justify-center'>
-        <div className='h-32 w-32 rounded-full bg-gray-500'>
+    <div className="flex h-screen flex-row items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
+        <div className="h-32 w-32 rounded-full bg-gray-500">
           {selectedImage && (
             <Image
               width={'250px'}
               height={'250px'}
-              className='rounded-full'
+              className="rounded-full"
               src={URL.createObjectURL(selectedImage)}
-              alt='img'
+              alt="img"
             />
           )}
         </div>
         <button
-          className='my-4 rounded-md bg-green-400 p-2 text-2xl font-bold text-white'
+          className="my-4 rounded-md bg-green-400 p-2 text-2xl font-bold text-white"
           onClick={handleButtonClick}
         >
           Upload
           <input
-            className='hidden'
-            type='file'
-            name='myImage'
+            className="hidden"
+            type="file"
+            name="myImage"
             onChange={handleFileChange}
             ref={hiddenFileInput}
           />
         </button>
       </div>
-      <div className='ml-12 mb-12 flex flex-col'>
-        <label className='mb-4 text-2xl font-bold'>
+      <div className="ml-12 mb-12 flex flex-col">
+        <label className="mb-4 text-2xl font-bold">
           Target:{' '}
           <input
-            className='rounded-md border-2 border-black'
-            type='text'
+            className="rounded-md border-2 border-black"
+            type="text"
             value={target}
             onChange={handleTargetChange}
           />
         </label>
-        <label className='text-2xl font-bold'>
+        <label className="text-2xl font-bold">
           Current:{' '}
           <input
-            className='rounded-md border-2 border-black'
-            type='text'
+            className="rounded-md border-2 border-black"
+            type="text"
             onChange={handleCurrentChange}
             value={current}
           />
         </label>
-        <p className='mt-4 text-2xl font-bold'>
+        <p className="mt-4 text-2xl font-bold">
           Process: {target && (current / target) * 100}%
-          {convertPercentageToEmoji((current / target))}
+          {convertPercentageToEmoji(current / target)}
         </p>
       </div>
     </div>
