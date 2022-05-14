@@ -1,14 +1,15 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { Image as NextImage } from 'next/image'
+import { useState, useRef, useEffect } from 'react'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
-  const [target, setTarget] = useState(10)
-  const [current, setCurrent] = useState(0)
+  const [target, setTarget] = useState(10000)
+  const [current, setCurrent] = useState(2000)
   const [selectedImage, setSelectedImage] = useState(null)
 
   const hiddenFileInput = useRef(null)
+  const canvasRef = useRef(null)
 
   const handleTargetChange = e => {
     setTarget(e.target.value)
@@ -27,7 +28,7 @@ export default function Home() {
     setSelectedImage(fileUploaded)
   }
 
-  // TODO: Convert percentage to emoji and display it
+  // DONE: Convert percentage to emoji and display it
   const convertPercentageToEmoji = percentage => {
     const process = Math.floor(percentage * 10)
     const doneEmoji = '🟩'.repeat(Math.min(10, process))
@@ -35,18 +36,21 @@ export default function Home() {
     return doneEmoji + inProgressEmoji
   }
 
+  // TODO: draw an image on canvas, and add circle process decoration
   return (
     <div className="flex h-screen flex-row items-center justify-center">
       <div className="flex flex-col items-center justify-center">
         <div className="h-32 w-32 rounded-full bg-gray-500">
           {selectedImage && (
-            <Image
-              width={'250px'}
-              height={'250px'}
-              className="rounded-full"
-              src={URL.createObjectURL(selectedImage)}
-              alt="img"
-            />
+            <>
+              <NextImage
+                width={'250px'}
+                height={'250px'}
+                className="rounded-full"
+                src={URL.createObjectURL(selectedImage)}
+                alt="img"
+              />
+            </>
           )}
         </div>
         <button
@@ -83,8 +87,8 @@ export default function Home() {
           />
         </label>
         <p className="mt-4 text-2xl font-bold">
-          Process: {target && (current / target) * 100}%
           {convertPercentageToEmoji(current / target)}
+          {target && ((current / target) * 100).toFixed(2)}%
         </p>
       </div>
     </div>
