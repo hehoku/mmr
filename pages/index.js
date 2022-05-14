@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Image as NextImage } from 'next/image'
+import Image from 'next/image'
 import { useState, useRef, useEffect } from 'react'
 import styles from '../styles/Home.module.css'
 
@@ -36,21 +36,48 @@ export default function Home() {
     return doneEmoji + inProgressEmoji
   }
 
-  // TODO: draw an image on canvas, and add circle process decoration
+  useEffect(() => {
+    if (canvasRef.current && selectedImage) {
+      const context = canvasRef.current.getContext('2d')
+      const w = context.canvas.width
+      const h = context.canvas.height
+      const centerX = w / 2
+      const centerY = h / 2
+      const radius = Math.min(w, h) / 2
+
+      context.beginPath()
+      context.arc(centerX, centerY, radius, 0, 2 * Math.PI)
+      context.fillStyle = 'green'
+      context.clip()
+
+      const image = new window.Image()
+      console.log(selectedImage)
+      image.src = URL.createObjectURL(selectedImage)
+      image.onload = () => {
+        context.drawImage(image, 0, 0, w, h)
+      }
+
+      context.beginPath()
+      context.arc(centerX, centerY, radius - 20, 0, 2 * Math.PI)
+      context.clip()
+    }
+  }, [selectedImage])
+
+  // DONE: draw an image on canvas, and add circle process decoration
   return (
     <div className="flex h-screen flex-row items-center justify-center">
       <div className="flex flex-col items-center justify-center">
         <div className="h-32 w-32 rounded-full bg-gray-500">
+          {' '}
           {selectedImage && (
-            <>
-              <NextImage
+            <div>
+              <canvas
+                className="h-32 w-32"
+                ref={canvasRef}
                 width={'250px'}
                 height={'250px'}
-                className="rounded-full"
-                src={URL.createObjectURL(selectedImage)}
-                alt="img"
               />
-            </>
+            </div>
           )}
         </div>
         <button
