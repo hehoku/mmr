@@ -41,14 +41,14 @@ export default function Home() {
   // DONE: add two circular ring, one as background, the other as progress
   useEffect(() => {
     if (canvasRef.current && selectedImage) {
-      console.log('drawing image')
+      console.log(`draw image with process: ${progress} `)
       const context = canvasRef.current.getContext('2d')
       const w = context.canvas.width
       const h = context.canvas.height
       const centerX = w / 2
       const centerY = h / 2
       const radius = Math.min(w, h) / 2
-
+      console.log(`canvas size: ${w} x ${h}`)
       context.clearRect(0, 0, w, h)
 
       // draw background
@@ -56,7 +56,7 @@ export default function Home() {
       context.arc(centerX, centerY, radius, 0, 2 * Math.PI)
       context.fillStyle = 'black'
       context.fill()
-      // context.clip()
+      context.clip()
 
       // circular ring for progress
       context.beginPath()
@@ -79,16 +79,19 @@ export default function Home() {
       context.strokeStyle = gradient
       context.stroke()
 
+      // BUG：以下代码不启用的时候可以动态展示 progress bar, 启用下面代码后无法正常显示
       // draw image
-      context.beginPath()
-      context.arc(centerX, centerY, radius - 10, 0, 2 * Math.PI)
-      const image = new window.Image()
-      console.log(selectedImage)
-      image.src = URL.createObjectURL(selectedImage)
-      image.onload = () => {
-        context.drawImage(image, 0, 0, w, h)
-      }
-      context.clip()
+      // context.beginPath()
+      // context.arc(centerX, centerY, radius - 20, 0, 2 * Math.PI)
+      // const image = new window.Image()
+      // image.src = ''
+      // console.log(selectedImage)
+      // image.src = URL.createObjectURL(selectedImage)
+      // image.onload = () => {
+      //   context.drawImage(image, 0, 0, w, h)
+      // }
+      // context.clip()
+      // context.save()
     }
   }, [progress, selectedImage])
 
@@ -102,12 +105,12 @@ export default function Home() {
   return (
     <div className="flex h-screen flex-row items-center justify-center">
       <div className="flex flex-col items-center justify-center">
-        <div className="h-32 w-32 bg-gray-500">
+        <div className="h-64 w-64 bg-gray-500">
           {' '}
           {selectedImage && (
             <div>
               <canvas
-                className="h-32 w-32"
+                className="h-64 w-64"
                 ref={canvasRef}
                 width={'250px'}
                 height={'250px'}
