@@ -137,7 +137,7 @@ export default function Home() {
           />
         </button>
       </div>
-      <div className="ml-12 mb-12 flex w-1/2 flex-col">
+      <div className="max-w-1/2 ml-12 mb-12 flex flex-col">
         <p className="mb-4 text-xl font-bold">
           Fill in the target and current, then upload an image.
         </p>
