@@ -10,7 +10,7 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null)
 
   const hiddenFileInput = useRef(null)
-  const canvasRef = useRef(null)
+  const canvasRef = useRef()
 
   const handleTargetChange = e => {
     setTarget(e.target.value)
@@ -40,7 +40,7 @@ export default function Home() {
   // DONE: draw an image on canvas, and add circle process decoration
   // DONE: add two circular ring, one as background, the other as progress
   useEffect(() => {
-    if (canvasRef.current && selectedImage) {
+    if (selectedImage) {
       console.log(`draw image with process: ${progress} `)
       const context = canvasRef.current.getContext('2d')
       const w = context.canvas.width
@@ -54,7 +54,7 @@ export default function Home() {
       // draw background
       context.beginPath()
       context.arc(centerX, centerY, radius, 0, 2 * Math.PI)
-      context.fillStyle = 'black'
+      context.fillStyle = 'rgba(0, 0, 0, 0.1)'
       context.fill()
       context.clip()
 
@@ -70,28 +70,33 @@ export default function Home() {
       )
       context.lineWidth = 20
       context.lineCap = 'round'
-      var gradient = context.createLinearGradient(0, 0, w / 2, h / 2)
-      gradient.addColorStop(0, 'yellow')
-      gradient.addColorStop(0.25, 'cyan')
-      gradient.addColorStop(0.5, 'orange')
-      gradient.addColorStop(0.75, 'red')
-      gradient.addColorStop(1, 'green')
+      var gradient = context.createLinearGradient(0, 0, w, h)
+      gradient.addColorStop(0, 'hsl(240deg 100% 20%)')
+      gradient.addColorStop(0.11, 'hsl(289deg 100% 21%)')
+      gradient.addColorStop(0.22, 'hsl(315deg 100% 27%)')
+      gradient.addColorStop(0.33, 'hsl(329deg 100% 36%)')
+      gradient.addColorStop(0.44, 'hsl(337deg 100% 43%)')
+      gradient.addColorStop(0.56, 'hsl(357deg 91% 59%)')
+      gradient.addColorStop(0.67, 'hsl(17deg 100% 59%)')
+      gradient.addColorStop(0.78, 'hsl(34deg 100% 53%)')
+      gradient.addColorStop(0.89, 'hsl(45deg 100% 50%)')
+      gradient.addColorStop(1, 'hsl(55deg 100% 50%)')
       context.strokeStyle = gradient
       context.stroke()
 
       // BUG：以下代码不启用的时候可以动态展示 progress bar, 启用下面代码后无法正常显示
       // draw image
-      // context.beginPath()
-      // context.arc(centerX, centerY, radius - 20, 0, 2 * Math.PI)
-      // const image = new window.Image()
-      // image.src = ''
-      // console.log(selectedImage)
-      // image.src = URL.createObjectURL(selectedImage)
-      // image.onload = () => {
-      //   context.drawImage(image, 0, 0, w, h)
-      // }
-      // context.clip()
-      // context.save()
+      context.beginPath()
+      context.arc(centerX, centerY, radius - 20, 0, 2 * Math.PI)
+      const image = new window.Image()
+      console.log(selectedImage)
+      image.src = URL.createObjectURL(selectedImage)
+      image.onload = () => {
+        console.log('requesting for image')
+        context.drawImage(image, 0, 0, w, h)
+      }
+      context.clip()
+      context.save()
     }
   }, [progress, selectedImage])
 
@@ -132,7 +137,13 @@ export default function Home() {
           />
         </button>
       </div>
-      <div className="ml-12 mb-12 flex flex-col">
+      <div className="ml-12 mb-12 flex w-1/2 flex-col">
+        <p className="mb-4 text-xl font-bold">
+          Fill the target and current, then upload an image.
+        </p>
+        <p className="mb-4 text-xl font-bold">
+          If you want get new image, please refresh the page.
+        </p>
         <label className="mb-4 text-2xl font-bold">
           Target:{' '}
           <input
