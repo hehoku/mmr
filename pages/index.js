@@ -139,10 +139,10 @@ export default function Home() {
       </div>
       <div className="ml-12 mb-12 flex w-1/2 flex-col">
         <p className="mb-4 text-xl font-bold">
-          Fill the target and current, then upload an image.
+          Fill in the target and current, then upload an image.
         </p>
         <p className="mb-4 text-xl font-bold">
-          If you want get new image, please refresh the page.
+          If you want to get a new image, please refresh the page.
         </p>
         <label className="mb-4 text-2xl font-bold">
           Target:{' '}
